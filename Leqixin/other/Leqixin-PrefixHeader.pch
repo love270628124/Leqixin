@@ -1,0 +1,124 @@
+//
+//  Leqixin-PrefixHeader.pch
+//  乐企信
+//
+//  Created by 震霄 张 on 16/3/28.
+//  Copyright © 2016年 SDW. All rights reserved.
+//
+
+#ifndef Leqixin_PrefixHeader_pch
+#define Leqixin_PrefixHeader_pch
+
+#import "UIView_extra.h"
+#import "NSString+Extension.h"
+#import "AFNetworking.h"
+#import "MJExtension.h"
+#import "JPUSHService.h"
+#import "MJRefresh.h"
+#import "JSSDWProgressHUD.h"
+#import "ShareObject.h"
+#import "AlertView.h"
+#import "ACMacros.h"
+#import "UserInfoModel.h"
+#import "AppDelegate.h"
+#import "UIImageView+WebCache.h"
+#import "UIView+SDAutoLayout.h"
+
+
+#define SCREEN_W [UIScreen mainScreen].bounds.size.width
+#define SCREEN_H [UIScreen mainScreen].bounds.size.height
+#define SCREEN_SCALE_W [UIScreen mainScreen].bounds.size.width/375
+#define SCREEN_SCALE_H [UIScreen mainScreen].bounds.size.height/667
+
+//#define rootUrl @"http://61.155.215.16"//生产
+#define rootUrl @"http://61.155.215.16:8070"//测试
+
+/**
+ *  webSocket url
+ *  username = 个人id
+ **/
+#define webSocketUrl    @"ws://61.155.215.16:8077/websocket/websocket?username="
+
+/**
+ *  @brief 访客咨询界面中的接待详情tableview的tag
+ */
+#define SER_TABLE_TAG 1001
+/**
+ *  @brief 访客咨询界面中的我的询盘tableview的tag
+ */
+#define MINE_TABLE_TAG 1002
+
+/**
+ *  @brief 访客详情中访客信息tableview的tag
+ */
+#define baseInfoCellTag 2001
+/**
+ *  @brief 访客详情中的来访记录tableview的tag
+ */
+#define recordCellTag 2002
+
+/**
+ *  @brief 数据中心中表格视图的tag
+ */
+#define execlTag 3000
+/**
+ *  @brief 数据中心中底部按键的tag
+ */
+#define dataBtnTag 3100
+
+/**
+ *  @brief 朋友圈
+ */
+#define circleOfFriendsTag 4001
+/**
+ *  @brief 微信好友
+ */
+#define weiChatFriendTag 4002
+/**
+ *  @brief qq空间
+ */
+#define qqZoneTag 4003
+/**
+ *  @brief qq好友
+ */
+#define qqFriendTag 4004
+/**
+ *  @brief 新浪微博
+ */
+#define sinaWeiboTag 4005
+/**
+ *  @brief 旧密码删除按钮tag
+ */
+#define usedPswdDeleteBtnTag 5000
+
+/**
+ *  @brief 新密码删除按钮tag
+ */
+#define newPswdDeleteBtnTag 5001
+/**
+ *  @brief 再次密码删除按钮tag
+ */
+#define againPswdDeleteBtnTag 5002
+
+/**
+ *  @brief 首页按钮tag
+ */
+#define AppTagPadding 500
+
+/**
+ *  @brief 首页数据按钮tag
+ */
+#define HomeTopDataBtnTag 600
+#define HomeDowmDataBtnTag 650
+
+/**
+ *  @brief RGB颜色
+ */
+#define ZXcolor(r,g,b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0];
+
+
+#define iPhone4 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)
+
+/** 设备是否为iPhone 5C/5/5S 分辨率320x568，像素640x1136，@2x */
+#define iPhone5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)
+#endif /* Leqixin_PrefixHeader_pch */
