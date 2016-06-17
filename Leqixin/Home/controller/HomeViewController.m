@@ -185,6 +185,7 @@
 
 - (void)receiveWebSocketChatMessage:(NSNotification *)notification {
     //
+//    NSLog(@"userInfo = %@",notification.userInfo);
 //    NSLog(@"%@",[SingletonWebSocket receivedMessageDictionary]);
     NSDictionary *recevieDict = [[NSDictionary alloc] initWithDictionary:[SingletonWebSocket receivedMessageDictionary]];
 //    //聊天回复
@@ -203,16 +204,14 @@
         [vistor.msgDic setObject:recevieDict[@"id"] forKey:@"nameid"];
         vistor.title = [NSString stringWithFormat:@"%@客户",recevieDict[@"itemid"]];
         
-//        [self saveChatMessage:recevieDict];
-        
         [self.navigationController pushViewController:vistor animated:YES];
     }else{
         
         if ([recevieDict[@"itemid"] isEqualToString:self.tempDelegate.chatingVistorId]) {
             
-//            [self saveChatMessage:recevieDict];
             self.tempDelegate.isReceivedNewMsg = YES;
         }else{
+            
             [self addUnreadMessage:msgDic];
             
             if (![self.tempDelegate.haveNewMsgIdArr containsObject:recevieDict[@"itemid"]]) {
@@ -263,11 +262,14 @@
 
 //未读消息列表没有此聊天对象
 - (void)addUnreadMessage:(NSDictionary *)msgDict {
-//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"UnreadMessageFiel" ofType:@"plist"];
+//    NSString *path = [[NSBundle mainBundle] pathForResource:@"UnreadMessageFiel" ofType:@"plist"];
+//    [self.tempDelegate.receiveUnReadMsgArr addObject:msgDict];
+//    [self.tempDelegate.receiveUnReadMsgArr writeToFile:path atomically:YES];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    self.tempDelegate.receiveUnReadMsgArr = [NSMutableArray array];
     [self.tempDelegate.receiveUnReadMsgArr addObject:msgDict];
-    [self.tempDelegate.receiveUnReadMsgArr writeToFile:path atomically:YES];
-//    [defaults setObject:self.tempDelegate.receiveUnReadMsgArr forKey:@"unReadMsgArray"];
+    [defaults setObject:self.tempDelegate.receiveUnReadMsgArr forKey:@"unReadMsgArray"];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:ReceivedUnReadMessage
                                                         object:nil];
@@ -485,7 +487,7 @@
     self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
     
     self.view.backgroundColor = ZXcolor(242, 242, 245);
-    self.title = @"仕脉";
+    self.title = @"乐企信";
     [self.navigationController.navigationBar setTitleTextAttributes:
      
      @{NSFontAttributeName:[UIFont systemFontOfSize:19],
@@ -840,7 +842,7 @@
     
     NSDictionary *userInfo = [notification userInfo];
     NSString *title = [userInfo valueForKey:@"title"];
-    NSString *content = [userInfo valueForKey:@"content"];
+//    NSString *content = [userInfo valueForKey:@"content"];
     
     NSIndexPath *path;
     //新评论
@@ -876,29 +878,46 @@
             
         }
         
-    }else if ([title integerValue]>0){
+    }else if ([title isEqualToString:@"-4"]){
+#pragma mark - 极光
+        /*Content为json字符串具体如下：
+         isitorid：聊天唯一的id
+         nameid：网页客户的id（websocket发送时nameid属性）*/
         //聊天回复
-        NSMutableDictionary *msgDic = [NSMutableDictionary dictionary];
-        [msgDic setValue:title forKey:@"vistorId"];
-        [msgDic setValue:content forKey:@"content"];
+        NSDictionary *dic = [self dictionaryWithJsonString:[userInfo valueForKey:@"content"]];
         
-        if (!self.tempDelegate.isChatRoomExist) {
+        NSMutableDictionary *msgDic = [NSMutableDictionary dictionary];
+        [msgDic setValue:dic[@"isitorid"] forKey:@"itemid"];
+        [msgDic setObject:dic[@"nameid"] forKey:@"nameid"];
+        //没有聊天内容，所以不用保存到聊天记录里面
+//        [self saveChatMessage:msgDic];
+        
+        if (!self.tempDelegate.isChatRoomExist ) {
+            self.tempDelegate.isChatRoomExist = YES;
             ChatViewController *vistor = [[ChatViewController alloc]init];
-            vistor.msgDic = msgDic;
-            vistor.title = [NSString stringWithFormat:@"%@客户",msgDic[@"vistorId"]];
-            [self.navigationController pushViewController:vistor animated:YES];
+            vistor.msgDic = [NSMutableDictionary new];
+            [vistor.msgDic setObject:dic[@"isitorid"] forKey:@"itemid"];
+            [vistor.msgDic setObject:dic[@"nameid"] forKey:@"nameid"];
+            vistor.title = [NSString stringWithFormat:@"%@客户",dic[@"isitorid"]];
             
+            [self.navigationController pushViewController:vistor animated:YES];
         }else{
-            if ([title isEqualToString:self.tempDelegate.chatingVistorId]) {
-                //                [self.tempDelegate.receiveUnReadMsgArr addObject:msgDic];
+            
+            if ([dic[@"isitorid"] isEqualToString:self.tempDelegate.chatingVistorId]) {
+                
                 self.tempDelegate.isReceivedNewMsg = YES;
             }else{
-                if (![self.tempDelegate.haveNewMsgIdArr containsObject:title]) {
-                    [self.tempDelegate.haveNewMsgIdArr addObject:title];
+                [self addUnreadMessage:msgDic];
+                
+                if (![self.tempDelegate.haveNewMsgIdArr containsObject:dic[@"isitorid"]]) {
+                    [self.tempDelegate.haveNewMsgIdArr addObject:dic[@"isitorid"]];
+                    
                 }
             }
-            NSLog(@"%@",self.tempDelegate.haveNewMsgIdArr);
         }
+        
+    } else if ([title isEqualToString:@"-5"]) {
+        //重新匹配客服
     }
     
     MineCollectionViewCell * cell = (MineCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:path];
@@ -968,6 +987,7 @@
             if(self.tempDelegate.isChatRoomExist){
                 [self.navigationController popViewControllerAnimated:NO];
             }
+            
             [self.navigationController pushViewController:vistor animated:YES];
             
         }else{

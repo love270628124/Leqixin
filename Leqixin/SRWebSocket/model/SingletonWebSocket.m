@@ -13,7 +13,7 @@
     SRWebSocket *srWebSocket;
     NSString *connectUrlString,*receiveMessage;
     NSDictionary *receiveMsgDict;
-    NSTimer *aTimer;
+    NSTimer *aTimer,*bTimer;
     
 }
 
@@ -62,9 +62,9 @@
     //
     NSLog(@"webSocket connected !");
     //定时发送心跳包给服务器，保持webSocket连接
-//    aTimer = [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(sendPing:) userInfo:nil repeats:YES];
+    aTimer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(sendPing:) userInfo:nil repeats:YES];
     
-    aTimer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(senderMessageToServer:) userInfo:nil repeats:YES];
+    bTimer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(senderMessageToServer:) userInfo:nil repeats:YES];
     
 }
 
@@ -83,8 +83,10 @@
     switch ([receiveDict[@"staty"] intValue]) {
         case 0:
             //received sender success message
-            [[NSNotificationCenter defaultCenter] postNotificationName:ReceivedSenderSuccessMessage
-                                                                object:nil];
+//            [[NSNotificationCenter defaultCenter] postNotificationName:ReceivedSenderSuccessMessage
+//                                                                object:nil];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:ReceivedSenderSuccessMessage object:nil userInfo:receiveDict];
             NSLog(@"received:\"%@\"",message);
             break;
             
@@ -94,6 +96,8 @@
             //
             [[NSNotificationCenter defaultCenter] postNotificationName:ReceivedChatMessage
                                                                 object:nil];
+            
+//            [[NSNotificationCenter defaultCenter] postNotificationName:ReceivedChatMessage object:nil userInfo:receiveDict];
             NSLog(@"received:\"%@\"",message);
             break;
             
@@ -101,21 +105,26 @@
             //received sender failed message
             [self receiveMessagedictionary:receiveDict];
             //
-            [[NSNotificationCenter defaultCenter] postNotificationName:ReceivedSenderFailedMessage
-                                                                object:nil];
+//            [[NSNotificationCenter defaultCenter] postNotificationName:ReceivedSenderFailedMessage
+//                                                                object:nil];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:ReceivedSenderFailedMessage object:nil userInfo:receiveDict];
+            
             NSLog(@"received:\"%@\"",message);
             break;
             
         case -2:
             //received system message
-            [[NSNotificationCenter defaultCenter] postNotificationName:ReceivedSystemMessage
-                                                                object:nil];
+//            [[NSNotificationCenter defaultCenter] postNotificationName:ReceivedSystemMessage
+//                                                                object:nil];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:ReceivedSystemMessage object:nil userInfo:receiveDict];
             NSLog(@"received:\"%@\"",message);
             break;
             
         case -3:
             //received heartbeat message
-//            NSLog(@"received:\"%@\"",message);
+            NSLog(@"received:\"%@\"",message);
             break;
             
         default:
@@ -129,6 +138,7 @@
     NSLog(@"webSocket closed !");
     srWebSocket = nil;
     [aTimer invalidate];
+    [bTimer invalidate];
     
     [self reconnectServer];
 }
@@ -182,17 +192,11 @@
     [srWebSocket close];
     srWebSocket = nil;
     [aTimer invalidate];
+    [bTimer invalidate];
     aTimer = nil;
+    bTimer = nil;
 }
-/**
- *  heartbeat
- *  NSDictionary *msgDict = @{@"nameid":@"",
- @"id":[NSString stringWithFormat:@"%li",self.tempDelegate.userModel.userid],
- @"itemid":@"",
- @"type":@"-3",
- @"msg":@""};
- [self senderMessageToServer:msgDict];
- **/
+//
 - (void)sendPing:(id)sender {
     //keep heartbeat
     if (srWebSocket) {

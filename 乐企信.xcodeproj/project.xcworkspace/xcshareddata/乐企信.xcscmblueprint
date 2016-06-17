@@ -1,20 +1,28 @@
 {
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "3D32D83149F63901773F49AA1885F558DFFD6EDB",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
     "646fb212-6d06-11e3-a2a4-57cd746879f3++1155" : {
 
     }
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "3D32D83149F63901773F49AA1885F558DFFD6EDB" : 0,
     "646fb212-6d06-11e3-a2a4-57cd746879f3++1155" : 0
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "782042B6-FBD5-402A-A343-BD7AAB41D038",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "3D32D83149F63901773F49AA1885F558DFFD6EDB" : "Leqixin\/",
     "646fb212-6d06-11e3-a2a4-57cd746879f3++1155" : "Leqixin\/Leqixin\/Home\/ChatRoom\/OtherResources\/MJRefresh\/MJRefresh.bundle\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "乐企信",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
   "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "乐企信.xcodeproj",
   "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/love270628124\/Leqixin.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "3D32D83149F63901773F49AA1885F558DFFD6EDB"
+    },
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "svn:\/\/192.168.0.179\/BloodSugar",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",

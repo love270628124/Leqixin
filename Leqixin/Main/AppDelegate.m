@@ -144,6 +144,10 @@
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(registerLocalNotification)
+                                                 name:ReceivedChatMessage object:nil];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -151,10 +155,28 @@
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     
-//    [self registerLocalNotification];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                      selector:@selector(registerLocalNotification)
-                          name:ReceivedChatMessage object:nil];
+    UIApplication*   app = [UIApplication sharedApplication];
+    __block    UIBackgroundTaskIdentifier bgTask;
+    bgTask = [app beginBackgroundTaskWithExpirationHandler:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if (bgTask != UIBackgroundTaskInvalid) {
+                
+                bgTask = UIBackgroundTaskInvalid;
+            }
+        });
+    }];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if (bgTask != UIBackgroundTaskInvalid) {
+                
+                bgTask = UIBackgroundTaskInvalid;
+            }
+        });
+    });
+    
+    
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -609,7 +631,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     
     self.categorys = [[UIMutableUserNotificationCategory alloc] init];
     self.categorys.identifier = KNotificationCategoryIdentifile;
-    [self.categorys setActions:@[action1,action2] forContext:UIUserNotificationActionContextDefault];
+//    [self.categorys setActions:@[action1,action2] forContext:UIUserNotificationActionContextDefault];
     UIUserNotificationSettings* newSetting= [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge|UIUserNotificationTypeSound|UIUserNotificationTypeAlert categories:[NSSet setWithObject:self.categorys]];
     
     [[UIApplication sharedApplication] registerUserNotificationSettings:newSetting];
@@ -631,7 +653,6 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
 #pragma mark 添加本地通知
 - (void) addLocalNotification{
     
-    //    NSLog(@"22222");
     [UIApplication sharedApplication].delegate = self;
     UILocalNotification * notification=[[UILocalNotification alloc] init];
     

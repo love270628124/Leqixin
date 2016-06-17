@@ -270,6 +270,7 @@
 		61FF25911CF1AA7E009D7831 /* Contact+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 61FF258E1CF1AA7D009D7831 /* Contact+CoreDataProperties.m */; };
 		61FF25921CF1AA7E009D7831 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = 61FF25901CF1AA7D009D7831 /* Contact.m */; };
 		9292C72B1D0811D1001285A1 /* UnreadMessageFiel.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9292C72A1D0811D1001285A1 /* UnreadMessageFiel.plist */; };
+		92D8202F1D13A4500009E9B2 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92D8202E1D13A4500009E9B2 /* AVFoundation.framework */; };
 		92FD594C1D05147E00E83B7A /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 92FD59471D05147E00E83B7A /* Makefile */; };
 		92FD594D1D05147E00E83B7A /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FD594B1D05147E00E83B7A /* SRWebSocket.m */; };
 		92FD59511D0514F400E83B7A /* SingletonWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FD59501D0514F400E83B7A /* SingletonWebSocket.m */; };
@@ -760,6 +761,7 @@
 		61FF258F1CF1AA7D009D7831 /* Contact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Contact.h; sourceTree = "<group>"; };
 		61FF25901CF1AA7D009D7831 /* Contact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Contact.m; sourceTree = "<group>"; };
 		9292C72A1D0811D1001285A1 /* UnreadMessageFiel.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UnreadMessageFiel.plist; sourceTree = "<group>"; };
+		92D8202E1D13A4500009E9B2 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		92FD59471D05147E00E83B7A /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		92FD59481D05147E00E83B7A /* SocketRocket-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SocketRocket-Prefix.pch"; sourceTree = "<group>"; };
 		92FD594A1D05147E00E83B7A /* SRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRWebSocket.h; sourceTree = "<group>"; };
@@ -773,6 +775,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92D8202F1D13A4500009E9B2 /* AVFoundation.framework in Frameworks */,
 				61E8D9BD1CC7537E0077001D /* libsqlite3.tbd in Frameworks */,
 				61E8D9BB1CC753730077001D /* ImageIO.framework in Frameworks */,
 				61E8D9B91CC753680077001D /* JavaScriptCore.framework in Frameworks */,
@@ -1679,6 +1682,7 @@
 		61FC63001C8EB9F400DAB48B = {
 			isa = PBXGroup;
 			children = (
+				92D8202E1D13A4500009E9B2 /* AVFoundation.framework */,
 				61FC630B1C8EB9F400DAB48B /* Leqixin */,
 				61FC63301C8EB9F400DAB48B /* LeqixinUITests */,
 				61FC630A1C8EB9F400DAB48B /* Products */,

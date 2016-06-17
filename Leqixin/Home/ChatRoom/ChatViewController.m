@@ -32,6 +32,7 @@
 @implementation ChatViewController{
     UUInputFunctionView *IFView;
     UILabel *unReadMsgLabel;
+    UIActivityIndicatorView *activityIndicatorView;
 }
 
 -(void)regisFirstBecome
@@ -90,8 +91,11 @@
 
 - (void)getUnreadMessage {
     //
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"UnreadMessageFiel" ofType:@"plist"];
-    self.tempDelegate.receiveUnReadMsgArr = [NSMutableArray arrayWithContentsOfFile:path];
+//    NSString *path = [[NSBundle mainBundle] pathForResource:@"UnreadMessageFiel" ofType:@"plist"];
+//    self.tempDelegate.receiveUnReadMsgArr = [NSMutableArray arrayWithContentsOfFile:path];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    self.tempDelegate.receiveUnReadMsgArr = [[defaults objectForKey:@"unReadMsgArray"] mutableCopy];
     
     for (int i = 0; i < self.tempDelegate.receiveUnReadMsgArr.count; i++) {
         NSDictionary *dic = self.tempDelegate.receiveUnReadMsgArr[i];
@@ -109,7 +113,9 @@
         
     }
     
-    [self.tempDelegate.receiveUnReadMsgArr writeToFile:path atomically:YES];
+    [defaults setObject:self.tempDelegate.receiveUnReadMsgArr forKey:@"unReadMsgArray"];
+    
+//    [self.tempDelegate.receiveUnReadMsgArr writeToFile:path atomically:YES];
     
 //    [self.chatTableView reloadData];
 //    [self tableViewScrollToBottom];
@@ -252,10 +258,11 @@
     //
     if ([notification.name isEqualToString:ReceivedSenderSuccessMessage]) {
         //发送成功
+        [self saveChatRoomDataSource];
         
     } else if ([notification.name isEqualToString:ReceivedSenderFailedMessage]) {
         //发送失败,删除发送内容
-        AlertView *alterView = [[AlertView alloc]initWithTitle:@"发送失败" style:kAlertViewStyleFail showTime:kAlerViewShowTimeDefault];
+        AlertView *alterView = [[AlertView alloc]initWithTitle:@"对方不在线" style:kAlertViewStyleFail showTime:kAlerViewShowTimeDefault];
         [alterView showInView:self.view];
         [self.chatModel.dataSource removeLastObject];
         [self.chatTableView reloadData];
@@ -289,7 +296,7 @@
                                   @"type":@"1",
                                   @"msg":message};
         [self senderMessageToServer:msgDict];
-        
+        [self addActivityView];
     }
 }
 
@@ -476,6 +483,18 @@
 {
     return [model mj_keyValuesWithKeys:@[@"strIcon",@"strId",@"strTime",@"strName",@"strContent",@"picture",@"voice",@"strVoiceTime",@"type",@"from",@"showDateLabel"]];
     
+}
+
+#pragma mark - 发送等待
+- (void)addActivityView {
+    if (activityIndicatorView) {
+        [activityIndicatorView removeFromSuperview];
+    }
+    activityIndicatorView = [[UIActivityIndicatorView alloc] init];
+    activityIndicatorView.frame = CGRectMake(0, 0, 30, 30);
+    activityIndicatorView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+    [activityIndicatorView startAnimating];
+    [self.view addSubview:activityIndicatorView];
 }
 
 @end
